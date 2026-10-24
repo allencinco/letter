@@ -1,102 +1,103 @@
-import './App.css';
-import { useState } from 'react';
+'use client';
 
-function App() {
+import Link from 'next/link';
+import { useRef, useState } from 'react';
+import Stars from './Stars';
+import Flowers from './Flowers';
+
+const COLORS = ['#ff6b6b', '#ffd166', '#4dabf7', '#69db7c', '#f783ac', '#b197fc'];
+
+const makeConfetti = () =>
+  Array.from({ length: 90 }, () => ({
+    x: Math.random() * 100,
+    dx: Math.random() * 200 - 100,
+    delay: Math.random() * 0.6,
+    dur: 2.5 + Math.random() * 2,
+    rot: Math.random() * 900 - 450,
+    w: 6 + Math.random() * 8,
+    h: 8 + Math.random() * 10,
+    round: Math.random() > 0.7,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+  }));
+
+export default function Letter({ letter }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [confetti, setConfetti] = useState([]);
+  const timer = useRef(null);
 
-  const handleClick = () => {
+  const toggle = () => {
     if (!isOpen) {
       setIsOpen(true);
-
-      setTimeout(() => {
-        setShowConfetti(true);
-      }, 600);
+      timer.current = setTimeout(() => setConfetti(makeConfetti()), 900);
     } else {
-      // CLOSE
+      clearTimeout(timer.current);
       setIsOpen(false);
-      setShowConfetti(false);
+      setConfetti([]);
     }
   };
 
   return (
-    <div className="container">
+    <main className={`scene ${isOpen ? 'is-open' : ''}`}>
+      {/* BACKDROP */}
+      <div className="glow" />
+      <Flowers />
+      <Stars />
+
+      <Link href="/" className="back">← All letters</Link>
 
       {/* ENVELOPE */}
-      <div 
-        className={`envelope ${isOpen ? 'opened' : ''}`} 
-        onClick={handleClick}
+      <button
+        className="envelope"
+        onClick={toggle}
+        aria-expanded={isOpen}
+        aria-label={isOpen ? 'Close the letter' : 'Open the letter'}
       >
-        <div className="envelope-flap"></div>
-      </div>
+        <span className="env-back" />
+        <span className="env-flap" />
+        <span className="env-front" />
+        <span className="seal">{letter.signature.replace(/\W/g, '')[0]}</span>
+      </button>
+      <p className="hint">tap to open</p>
 
       {/* LETTER */}
-      <div className={`letter ${isOpen ? 'show' : ''}`}>
-        <div className="letter-content">
+      <article className="letter" aria-hidden={!isOpen}>
+        <div className="letter-scroll">
+          <div className="ribbon">{letter.ribbon}</div>
+          <h1 className="title">{letter.title}</h1>
+          <div className="divider"><span>✦</span></div>
 
-          <h1 className="title">🎓 For Beron</h1>
+          {letter.paragraphs.map((text, i) => (
+            <p key={i} className="para" style={{ '--i': i }}>{text}</p>
+          ))}
 
-          <p>Hi Beron, how are you? It’s been a while I hope you’re doing okay. I just wanted to say congratulations on your graduation hehe.</p>
+          <div className="signature para" style={{ '--i': letter.paragraphs.length }}>{letter.signature}</div>
 
-          <p>
-            You know, I’ve kind of known you for a while now, since you were still in senior high school. 
-            I guess I know you a little bit hahaha. Of course, I’ve only seen you once, and we’re not really that close(?) siguro? hahaha, 
-            so I’m a bit shy too.
-          </p>
-
-          <p>
-            But still, I’ve seen you struggling, and all I could really do was comfort you through chats. 
-            I know that you’re strong on the outside, but deep inside you’re very vulnerable. 
-            Even so, you’re still able to handle everything.
-          </p>
-
-          <p>
-            And you know what? I’m really proud of you. I also know that a lot of people are proud of you. 
-            Soon, you’ll become an RN—I know you can do it, no sweat hahaha.
-          </p>
-
-          <p>
-            I know you’ll be an amazing nurse—not just because you’re smart, but because you genuinely care about people. 
-            No matter where life takes you, I’m always rooting for you. I’m always here for you.
-          </p>
-
-          <p>
-            So congratulations again, Beron. This is all I could manage for now—I just made this through the web with a bit of coding 😅 
-            I feel like it’s kind of corny hahaha. But still, congrats again. I’m so proud of you.
-          </p>
-
-          <div className="signature">
-            <p>—Allen</p>
-          </div>
-
+          <button className="close" onClick={toggle} tabIndex={isOpen ? 0 : -1}>
+            Close letter
+          </button>
         </div>
-      </div>
+      </article>
 
       {/* CONFETTI */}
-      {showConfetti && (
-        <div className="confetti-container">
-          {[...Array(50)].map((_, i) => {
-            const x = Math.random() * 500 - 250;
-            const y = Math.random() * 500 - 250;
-            const rotate = Math.random() * 720;
-
-            return (
-              <span
-                key={i}
-                className="confetti"
-                style={{
-                  '--x': `${x}px`,
-                  '--y': `${y}px`,
-                  '--r': `${rotate}deg`
-                }}
-              />
-            );
-          })}
-        </div>
-      )}
-
-    </div>
+      <div className="confetti-layer" aria-hidden="true">
+        {confetti.map((c, i) => (
+          <span
+            key={i}
+            className="confetti"
+            style={{
+              left: `${c.x}%`,
+              width: c.w,
+              height: c.round ? c.w : c.h,
+              borderRadius: c.round ? '50%' : 2,
+              background: c.color,
+              animationDelay: `${c.delay}s`,
+              animationDuration: `${c.dur}s`,
+              '--dx': `${c.dx}px`,
+              '--r': `${c.rot}deg`,
+            }}
+          />
+        ))}
+      </div>
+    </main>
   );
 }
-
-export default App;
