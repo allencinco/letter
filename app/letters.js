@@ -29,7 +29,7 @@ export const letters = [
     slug: 'letter-3',
     label: 'RN',
     title: 'RN Byummi',
-    ribbon: 'Occasion',
+    ribbon: 'Congratulations!',
     paragraphs: [
       'Byum, you passed the PNLE 2026! Congratulations, RN! I’m so proud of you and everything you’ve worked for.',
       'All those long days, all the studying, and every challenge you pushed through brought you here. You earned this moment, and I hope you take time to celebrate just how amazing it is.',

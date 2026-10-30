@@ -12,7 +12,7 @@ export default function Home() {
 
       <header className="menu-head">
         <p className="menu-kicker">a little something for every celebration</p>
-        <h1 className="menu-title">Letters</h1>
+        <h1 className="menu-title">Just for you</h1>
         <div className="divider"><span>✦</span></div>
       </header>
 

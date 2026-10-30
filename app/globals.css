@@ -324,13 +324,20 @@ body {
 }
 
 .menu-head { position: relative; text-align: center; width: min(420px, 90vw); }
-.menu-kicker { font-size: 1.3rem; color: #b83b78; opacity: 0.85; animation: rise 0.9s ease both; }
+.menu-kicker {
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  line-height: 1.35;
+  color: #b83b78;
+  opacity: 0.85;
+  animation: rise 0.9s ease both;
+}
 
 .menu-title {
   font-family: 'Great Vibes', cursive;
   font-weight: 400;
   font-size: clamp(4rem, 14vw, 6.5rem);
-  line-height: 1.1;
+  line-height: 1.25;
   background: linear-gradient(90deg, #b83b78, #f06fa5, #c9a24a, #b83b78);
   background-size: 250% 100%;
   -webkit-background-clip: text;
