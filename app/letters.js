@@ -38,4 +38,16 @@ export const letters = [
     ],
     signature: '—Allen',
   },
+  {
+    slug: 'letter-4',
+    label: ':>',
+    title: 'if u remember this site hope you read this',
+    ribbon: '',
+    paragraphs: [
+      "I like you, and you don't have to feel the same way. It won't change how I feel about you. I just think you're someone special, and I didn't want to keep these words to myself.",
+      "I don't know what tomorrow will bring, so I wanted you to know that meeting you is something I'm truly grateful for. I may not know where this will lead, but I'm happy that I got the chance to know you. Even the little moments and simple conversations mean more to me than you probably realize.",
+      "I'm not expecting anything from you. I just wanted to be honest about how I feel. Whatever happens, I hope you never doubt how wonderful you are. You deserve all the good things life has to offer.",
+    ],
+    signature: '—Aren',
+  },
 ];
